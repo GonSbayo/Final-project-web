@@ -1,0 +1,22 @@
+<%- include ("./partials/_header") %>
+
+
+<main role="main" class="container my-5">
+        <h2 class="blog-post-title">Are you sure you want to delete this product?</h2>
+        
+        <form action="/delete/<%= product._id %>" method="POST">
+          <div class="form-group">
+            <input type="text" class="form-control" name="name" placeholder="Name" value="<%= product.name %>">
+          </div>
+          <div class="form-group">
+            <input type="number" name="price" class="form-control" placeholder="Price"  value="<%= product.price %>">
+          </div>
+          <div class="form-group">
+            <input type="text" name="brand" class="form-control" placeholder="Brand"  value="<%= product.brand %>">
+          </div>
+          <a class = "btn btn-outline-dark" href ="/"> Back </a>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+</main>
+
+<%- include ("./partials/_footer") %>

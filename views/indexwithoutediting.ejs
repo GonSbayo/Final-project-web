@@ -1,0 +1,83 @@
+<%- include ("./partials/_header") %>
+<div class="container my-3">
+  <a href ="/newProduct"><button type="button" class="btn btn-primary">Create New Product</button></a>
+  <h1>Welcome, you are the admin of the webpage</h1>
+  <input type="submit" id="btnAllUsers" value="See all users" class="btn btn-outline-dark">
+  <input type="submit" id="btnLogout" value="Log out" class="btn btn-outline-dark">
+
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+
+  const user = '<%= user.id %>';
+
+
+var allusers ;
+  axios.get('http://127.0.0.1:3000/users')
+  .then(response => {
+      allusers = response.data;
+  })
+  .catch(error => {
+      console.log(error.response);
+      alert(`Problem when retrieving users info ${error.response}`);
+  });
+
+
+
+  const btnAllUsers = document.getElementById('btnAllUsers');
+  btnAllUsers.addEventListener('click', () => {
+      window.location.replace(`http://127.0.0.1:3000/users/all`);
+  });
+
+
+
+  const btnLogout = document.getElementById('btnLogout');
+  btnLogout.addEventListener("click", (e) => {
+      axios.post('http://127.0.0.1:3000/logout') // No params, the cookie handles it all
+      .then(response => {
+          console.log(response);
+          alert(`You have been logged out, you are being redirected`);
+          window.location.replace('http://127.0.0.1:3000/login');
+      })
+      .catch(error => {
+          console.log(error.response.data)
+          alert(`Error: ${error.response.data}`);
+      });
+  });
+
+  </script>
+
+<main role="main" class="container">
+
+      <% if (products.length == 0)  {   %>
+        <h2 class="blog-post-title">There are no products.</h2>
+      <%   }     %>
+
+      <% if (products.length != 0)  {   %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Brand</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (var i = 0; i <products.length; i++)  {   %>
+          <tr>
+            <td><%= products[i].name %></td>
+            <td>$<%= products[i].price %></td>
+            <td><%= products[i].brand %></td>
+            <td><a class = "btn btn-danger" href ="/delete/<%= products[i]._id %>"> Delete </a></td>
+            <td><a class = "btn btn-info" href ="/edit/<%= products[i]._id %>"> Edit </a></td>
+          </tr>
+          <%   }     %>
+        </tbody>
+      </table>
+      <%   }     %>
+
+</main>
+<%- include ("./partials/_footer") %>
